@@ -26,7 +26,6 @@ def printbar():
                 timeformat(second)],separator = ":")
     tf.print("=========="*8+timestring)
 
-    
 ```
 
 ```python
@@ -86,7 +85,7 @@ def data_iter(features, labels, batch_size=8):
     np.random.shuffle(indices)  #样本的读取顺序是随机的
     for i in range(0, num_examples, batch_size):
         indexs = indices[i: min(i + batch_size, num_examples)]
-        yield tf.gather(X,indexs), tf.gather(Y,indexs)
+        yield tf.gather(features,indexs), tf.gather(labels,indexs)
         
 # 测试数据管道效果   
 batch_size = 8
@@ -356,7 +355,7 @@ def data_iter(features, labels, batch_size=8):
     np.random.shuffle(indices)  #样本的读取顺序是随机的
     for i in range(0, num_examples, batch_size):
         indexs = indices[i: min(i + batch_size, num_examples)]
-        yield tf.gather(X,indexs), tf.gather(Y,indexs)
+        yield tf.gather(features,indexs), tf.gather(labels,indexs)
         
 # 测试数据管道效果   
 batch_size = 10
@@ -423,7 +422,7 @@ class DNNModel(tf.Module):
     @tf.function(input_signature=[tf.TensorSpec(shape = [None,1], dtype = tf.float32),
                               tf.TensorSpec(shape = [None,1], dtype = tf.float32)])  
     def loss_func(self,y_true,y_pred):  
-        #将预测值限制在1e-7以上, 1-e-7以下，避免log(0)错误
+        #将预测值限制在 1e-7 以上, 1 - 1e-7 以下，避免log(0)错误
         eps = 1e-7
         y_pred = tf.clip_by_value(y_pred,eps,1.0-eps)
         bce = - y_true*tf.math.log(y_pred) - (1-y_true)*tf.math.log(1-y_pred)
@@ -553,8 +552,8 @@ ax2.set_title("y_pred");
 
 ```
 
-如果对本书内容理解上有需要进一步和作者交流的地方，欢迎在公众号"Python与算法之美"下留言。作者时间和精力有限，会酌情予以回复。
+如果对本书内容理解上有需要进一步和作者交流的地方，欢迎在公众号"算法美食屋"下留言。作者时间和精力有限，会酌情予以回复。
 
 也可以在公众号后台回复关键字：**加群**，加入读者交流群和大家讨论。
 
-![image.png](./data/Python与算法之美logo.jpg)
+![算法美食屋二维码.jpg](./data/算法美食屋二维码.jpg)
